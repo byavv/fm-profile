@@ -1,26 +1,24 @@
 "use strict"
+const rabbit = require('rabbot')
+    , debug = require("debug")("ms:tracker")
+    , logger = require("../lib/logger");
 
-const rabbit = require('wascally')
-    , debug = require('debug')("profile")
 
-
-module.exports = function (app, done) {
-    function handle() {
-
+module.exports = function (app) {
+    const handle = () => {
+        app.rabbit = rabbit;
+        logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
     }
-    if (process.env.NODE_ENV != 'test')
+
+    app.once('started', () => {
         require('../lib/topology')(rabbit, {
             name: app.get('ms_name'),
             host: app.get("rabbit_host")
         })
-            .then(() => {
-                app.rabbit = rabbit;
-                debug("Rabbit client started");
-            })
             .then(handle)
-            .then(done);
-
-    app.close = () => {
-        rabbit.closeAll();
-    };
+            .catch((err) => {
+                logger.error(`Error when joining rabbit network: ${err}`);
+                throw err;
+            })
+    });
 }

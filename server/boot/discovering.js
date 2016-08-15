@@ -1,30 +1,26 @@
-var registry = require('etcd-registry');
+'use strict';
+const etcdRegistry = require('etcd-registry'),
+    logger = require('../lib/logger');
 /**
  * Service discovering
  */
 module.exports = function (app) {
-    if (process.env.NODE_ENV != 'test') {
-        var etcd_host = app.get('etcd_host');
-        var http_port = app.get('http_port');
-        var microserviceName = app.get('ms_name');
-        var services;
-        app.once('started', function () {
-            services = registry(`${etcd_host}:4001`);
-            services.join(microserviceName, { port: http_port });
-            setTimeout(() => {
-                services.lookup(microserviceName, function (err, service) {
-                    if (service) {
-                        console.log(`Service on ${service.url} registered as ${microserviceName}`);
-                    } else {
-                        console.log(`Service on ${microserviceName} registration failed`);
-                    }
-                });
-            }, 1000);
-        });
-
-        app.close = (done) => {
-            services.leave(microserviceName);
-            console.log(`Service ${microserviceName} stopped`);
-        };
-    }
+    const etcd_host = app.get('etcd_host');
+    const http_port = app.get('http_port');
+    const me = app.get('ms_name');
+    const registry = app.registry = etcdRegistry(`${etcd_host}:4001`);
+    app.once('started', () => {
+        registry.join(me, { port: http_port });
+        setTimeout(() => {
+            registry.lookup(me, function (err, service) {
+                if (service) {
+                    logger.info(`Service ${me} registered in etcd`);
+                    logger.info(`Key: ${me}\t\u2192\tUrl: ${service.url}`);
+                } else {
+                    logger.error(`Service on ${me} registration failed`);
+                    // don't throw here, etcd-registry will try to reconnect
+                }
+            });
+        }, 1000);
+    });
 };

@@ -1,5 +1,5 @@
 const async = require('async')
-  , debug = require("debug")('profile');
+  , debug = require("debug")('ms:profile');
 
 module.exports = function (app) {
   var router = app.loopback.Router();

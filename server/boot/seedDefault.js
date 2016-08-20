@@ -18,9 +18,9 @@ module.exports = (app, cb) => {
                     if (!users || (users && users.length < 1)) {
                         User.create([
                             {
-                                username: 'chip',
+                                username: 'user',
                                 email: 'john@doe.com',
-                                password: 'bigbull'
+                                password: 'user'
                             },
                             {
                                 username: 'admin',

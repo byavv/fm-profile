@@ -39,4 +39,22 @@ module.exports = function (Profile) {
         returns: { type: 'object', root: true },
         http: { path: '/updateProfile', verb: 'post', errorStatus: 400 }
     });
+
+    Profile.me = function (userId, cb) {
+        if (!userId) throw 'Not authorized'
+        cb(null, 'hi');
+    };
+    Profile.remoteMethod('me', {
+        accepts: [
+            {
+                arg: 'userId',
+                type: 'string',
+                http: (ctx) => {
+                    return ctx.req.get('X-PRINCIPLE');
+                }
+            }
+        ],
+        returns: { type: 'string', root: true },
+        http: { path: '/me', verb: 'post', errorStatus: 401 }
+    });
 };

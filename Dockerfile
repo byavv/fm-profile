@@ -7,9 +7,6 @@ MAINTAINER Aksenchyk V. <aksenchyk.v@gmail.com>
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Install pm2
-RUN npm install -g pm2
-
 # Install app dependencies
 COPY package.json /usr/src/app/
 RUN npm install
@@ -18,4 +15,5 @@ RUN npm install
 COPY . /usr/src/app
 
 EXPOSE 3006
-CMD [ "npm", "run", "pm2" ]
+
+CMD [ "npm", "start" ]

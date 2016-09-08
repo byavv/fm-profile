@@ -1,4 +1,7 @@
-[![CircleCI](https://circleci.com/gh/byavv/fm-profile.svg?style=svg)](https://circleci.com/gh/byavv/fm-profile)
+[![CircleCI](https://circleci.com/gh/byavv/fm-profile.svg?style=shield)](https://circleci.com/gh/byavv/fm-profile)
+[![David](https://img.shields.io/david/byavv/fm-profile.svg?maxAge=2592000)]()
+[![](https://images.microbadger.com/badges/image/aksenchyk/fm-profile.svg)](https://microbadger.com/images/aksenchyk/fm-profile "Provided by microbadger.com")
+[![Docker Automated build](https://img.shields.io/docker/automated/aksenchyk/fm-profile.svg?maxAge=2592000)]()
 
 ## Microservice tracker for [funny-market](https://github.com/byavv/funny-market) project
 
@@ -7,17 +10,23 @@
 - [etcd](https://github.com/coreos/etcd) self-registration via [etcd-registry](https://github.com/mafintosh/etcd-registry)
 
 ### Usage
-
-    npm install -g nodemon 
+```sh
+$ npm install -g nodemon 
      ...
-    git clone https://github.com/byavv/fm-profile.git
-    cd fm-profile
-    npm install
-
+$ cd fm-profile
+$ npm install
+```
 ### Basic Commands
+```sh
+$ npm start
+$ npm run dev
+$ npm test
+$ npm run clean
+$ npm run serve
+```
 
-    npm start
-    npm run dev
-    npm test
-    npm run clean
-    npm run serve
+### Build Docker Image
+
+```sh
+$ npm run build:docker
+```
